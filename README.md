@@ -106,7 +106,7 @@ Create a `.env` file in the root directory with the following variables:
 
 ```env
 # Database
-DATABASE_URL="mongodb+srv://username:password@cluster.mongodb.net/dbname"
+DATABASE_URL="mongodb url link"
 
 # NextAuth
 NEXTAUTH_URL="http://localhost:3000"
