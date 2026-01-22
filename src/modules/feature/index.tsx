@@ -1,7 +1,8 @@
 "use client";
-import { Crop, Expand, Scissors, Type, Zap } from "lucide-react";
+import { Crop, Expand, Scissors, Type, Zap} from "lucide-react";
 import React from "react";
 import { motion } from "framer-motion";
+import { useState } from "react";
 
 const features = [
   {
@@ -44,12 +45,20 @@ const features = [
     gradient: "from-primary-glow to-secondary-glow",
     delay: 0.5,
   },
+  {
+    icon: Type,
+    title: "Advanced Editing",
+    description:
+      "Adjust brightness, contrast, and saturation to fine-tune your images.",
+    gradient: "from-primary to-secondary",
+    delay: 0.6,
+  },
 ];
 
 const Features = () => {
   return (
     <section id="features" className="py-24 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-muted/20 to-transparent" />
+      <div className="absolute inset-0 bg-linear-to-b from-transparent via-muted/20 to-transparent" />
 
       <div className="container mx-auto px-4 relative z-10">
         <motion.div
@@ -61,7 +70,7 @@ const Features = () => {
         >
           <h2 className="text-4xl lg:text-6xl font-bold mb-6">
             <span className="text-foreground">Magical </span>
-            <span className="bg-gradient-primary !bg-clip-text text-transparent">
+            <span className="bg-gradient-primary bg-clip-text! text-transparent">
               Features
             </span>
           </h2>
@@ -107,11 +116,11 @@ function FeatureCard({ feature, index }: { feature: any; index: number }) {
       <div className="h-full glass rounded-2xl p-8 border border-card-border hover:border-primary/30 transition-all duration-300 shadow-glow-subtle hover:shadow-glow-primary">
         <div className="relative mb-6">
           <div
-            className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${gradient} p-4 group-hover:animate-glow-pulse`}
+            className={`w-16 h-16 rounded-2xl bg-linear-to-br ${gradient} p-4 group-hover:animate-glow-pulse`}
           >
             <Icon className="w-full h-full text-background" />
           </div>
-          <div className="absolute inset-0 w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-secondary/20 blur-xl group-hover:blur-2xl transition-all duration-300" />
+          <div className="absolute inset-0 w-16 h-16 rounded-2xl bg-linear-to-br from-primary/20 to-secondary/20 blur-xl group-hover:blur-2xl transition-all duration-300" />
         </div>
 
         <h3 className="text-2xl font-bold mb-4 text-foreground group-hover:text-primary transition-colors">
@@ -131,4 +140,86 @@ function FeatureCard({ feature, index }: { feature: any; index: number }) {
   );
 }
 
-export default Features;
+const AdvancedEditingFeature = () => {
+  const [brightness, setBrightness] = useState(100);
+  const [contrast, setContrast] = useState(100);
+  const [saturation, setSaturation] = useState(100);
+
+  const filterStyle: React.CSSProperties = {
+    filter: `brightness(${brightness}%) contrast(${contrast}%) saturate(${saturation}%)`,
+  };
+
+  return (
+    <div className="glass rounded-2xl p-6 border border-card-border mt-8">
+      <h2 className="text-xl font-semibold mb-4 text-primary">Advanced Editing</h2>
+
+      <div className="bg-muted/40 rounded-xl p-4 flex flex-col md:flex-row gap-4 items-center">
+        <div className="w-full md:w-1/2">
+          <img
+            src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80"
+            alt="Preview"
+            className="w-full h-full object-cover rounded-lg shadow-glow-subtle"
+            style={filterStyle}
+          />
+        </div>
+
+        <div className="w-full md:w-1/2 space-y-4">
+          <SliderControl
+            label="Brightness"
+            value={brightness}
+            min={50}
+            max={200}
+            onChange={setBrightness}
+          />
+          <SliderControl
+            label="Contrast"
+            value={contrast}
+            min={50}
+            max={200}
+            onChange={setContrast}
+          />
+          <SliderControl
+            label="Saturation"
+            value={saturation}
+            min={0}
+            max={300}
+            onChange={setSaturation}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const SliderControl = ({
+  label,
+  value,
+  min,
+  max,
+  onChange,
+}: {
+  label: string;
+  value: number;
+  min: number;
+  max: number;
+  onChange: (val: number) => void;
+}) => {
+  return (
+    <div className="space-y-2">
+      <div className="flex items-center justify-between text-sm text-foreground">
+        <span>{label}</span>
+        <span className="text-muted-foreground">{value}%</span>
+      </div>
+      <input
+        type="range"
+        min={min}
+        max={max}
+        value={value}
+        onChange={(e) => onChange(Number(e.target.value))}
+        className="w-full accent-primary"
+      />
+    </div>
+  );
+};
+
+export default AdvancedEditingFeature;

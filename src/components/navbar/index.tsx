@@ -1,8 +1,8 @@
 'use client';
-import { signIn, useSession } from 'next-auth/react';
+import { signIn, signOut, useSession } from 'next-auth/react';
 import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion';
-import { Menu, Sparkles, X } from 'lucide-react';
+import { LogOut, Menu, Sparkles, X } from 'lucide-react';
 import { Button } from '../ui/button';
 
 
@@ -36,6 +36,10 @@ const Navbar = () => {
     } else {
       await signIn("google");
     }
+  };
+
+  const handleLogout = async () => {
+    await signOut({ callbackUrl: '/' });
   };
 
   return (
@@ -86,6 +90,16 @@ const Navbar = () => {
             >
               {session?.user ? "Launch App" : "Sign In"}
             </Button>
+            {session?.user && (
+              <Button
+                variant="outline"
+                className="font-semibold"
+                onClick={handleLogout}
+              >
+                <LogOut className="h-4 w-4 mr-2" />
+                Logout
+              </Button>
+            )}
           </div>
 
            <button
@@ -124,6 +138,12 @@ const Navbar = () => {
             <Button variant="hero" className="w-full" onClick={handleSubmit}>
               {session?.user ? "Launch App" : "Sign In"}
             </Button>
+            {session?.user && (
+              <Button variant="outline" className="w-full" onClick={handleLogout}>
+                <LogOut className="h-4 w-4 mr-2" />
+                Logout
+              </Button>
+            )}
           </div>
         </motion.div>
       </div>
